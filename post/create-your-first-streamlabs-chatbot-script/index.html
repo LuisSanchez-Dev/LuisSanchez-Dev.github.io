@@ -186,12 +186,12 @@
 <p>To start creating your first script for Streamlabs Chatbot you need to meet these prerequisites:</p>
 <ul>
 <li>Basic Python 2.7 programming language knowledge</li>
-<li><a href="/how-to-use-scripts-in-streamlabs-chatbot/">Have your Streamlabs Chatbot set up to run scripts</a></li>
+<li><a href="https://luissanchezdev.com/how-to-use-scripts-in-streamlabs-chatbot/">Have your Streamlabs Chatbot set up to run scripts</a></li>
 </ul>
 <p>Don't get discouraged if you don't know the programming language that well yet, you can follow along with basic understanding of Python.</p>
 <h2 id="folder-location-and-structure">Folder location and structure</h2>
 <p>When you install a script it gets uncompressed and is copied to the Streamlabs Chatbot folder, to access this folder you just go  to the <code>Scripts</code> tab, right click on the window and select the <code>Open Scripts Folder</code> option. This will open the folder where all the scripts are, if the Streamlabs Chatbot was installed in the default location this  will open the <code>%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts</code> folder.</p>
-<p><img src="/img/posts/streamlabs-chatbot/create-your-first-script/open-scripts-folder.png" alt="open scripts folder option"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/create-your-first-script/open-scripts-folder.png" alt="open scripts folder option"></p>
 <p>Inside this folder each subfolder is a script and inside them are the script files as follows:</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts\
 <span class="ln">2</span>├── MyScript\
@@ -254,9 +254,9 @@
 <span class="ln">13</span><span class="k">def</span> <span class="nf">Tick</span><span class="p">():</span>
 <span class="ln">14</span>  <span class="k">pass</span>
 </code></pre></div><p>Now reload the scripts to see the new script appear in the list.</p>
-<p><img src="/img/posts/streamlabs-chatbot/create-your-first-script/scripts-list.png" alt="scripts list"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/create-your-first-script/scripts-list.png" alt="scripts list"></p>
 <p>If it doesn't appear, take a look in the errors list to check if you didn't miss anything.</p>
-<p><img src="/img/posts/streamlabs-chatbot/create-your-first-script/errors-list-icon.png" alt="script bug icon"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/create-your-first-script/errors-list-icon.png" alt="script bug icon"></p>
 <p>The script is now detected by Streamlabs Chatbot but right now it is deactivated, if the user doesn't activate your script, the <code>Execute</code> and <code>Tick</code> functions won't run, only the <code>Init</code> function will.</p>
 <p>The next step is to add the <code>!hello</code> command to the script. The <code>Execute</code> function runs whenever you receive a chat message, a whisper or a discord message. Since we only want to run when we receive a chat message we have to do the following:</p>
 <div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln">1</span><span class="k">def</span> <span class="nf">Execute</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>

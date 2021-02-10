@@ -188,7 +188,7 @@
 <h2 id="download">Download</h2>
 <p>You can download the script to follow along from <a href="https://dev.azure.com/luissanchezdev-blog/1140a576-94b1-44e5-ad98-a023edf1b7a4/_apis/git/repositories/07ce3f5f-75e9-457e-a653-f72a9351c670/items?path=%2FDiceRoller&amp;versionDescriptor%5BversionOptions%5D=0&amp;versionDescriptor%5BversionType%5D=0&amp;versionDescriptor%5Bversion%5D=master&amp;resolveLfs=true&amp;%24format=zip&amp;api-version=5.0&amp;download=true">here (direct download)</a> or <a href="http://gestyy.com/ee9Nrc">here (support the blog)</a>.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>If you don't know how to make a Streamlabs Chatbot script make sure to check out <a href="/create-your-first-streamlabs-chatbot-script/">how to create your first Streamlabs Chatbot script</a>.</p>
+<p>If you don't know how to make a Streamlabs Chatbot script make sure to check out <a href="https://luissanchezdev.com/create-your-first-streamlabs-chatbot-script/">how to create your first Streamlabs Chatbot script</a>.</p>
 <p>You also need to understand JSON (JavaScript Object Notation) to edit the user interface file, you can learn about JSON at these W3Schools' pages: <a href="https://www.w3schools.com/js/js_json_intro.asp">JSON - Introduction</a> and <a href="https://www.w3schools.com/js/js_json_syntax.asp">JSON Syntax</a>.</p>
 <p>Related to JSON, the JSON file will be converted to a Python Dictionary, you can <a href="https://docs.python.org/2/tutorial/datastructures.html#tut-dictionaries">learn more about python dictionaries here</a>.</p>
 <h2 id="adding-an-user-interface-to-your-script">Adding an user interface to your script</h2>
@@ -322,7 +322,7 @@
 <span class="ln">30</span>  <span class="p">},</span>
 <span class="ln">31</span><span class="p">}</span>
 </code></pre></div><p>Save the file and go to the scripts list, click on the <code>Dice Roll</code> script name and you can now see your user interface.</p>
-<p><img src="/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png" alt="script user interface"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png" alt="script user interface"></p>
 <p>Now with the user interface ready lets go  and edit the script!</p>
 <h3 id="4-reading-the-configuration-file">4. Reading the configuration file</h3>
 <p>When the user clicks on the <code>SAVE SETTINGS</code> button, Streamlabs Chatbot will create a file with the same name as the <code>&quot;output_file&quot;</code> value in the <code>UI_Config.json</code> file. If the user hasn't clicked the button, this file will not exist so we will set a default configuration.</p>
@@ -458,9 +458,9 @@
 <span class="ln">6</span><span class="k">def</span> <span class="nf">ReloadSettings</span><span class="p">(</span><span class="n">jsonData</span><span class="p">):</span>
 <span class="ln">7</span>  <span class="n">Init</span><span class="p">()</span>
 </code></pre></div><p>Save, reload the scripts, enable <code>Dice Roll</code> and test the <code>!roll</code> command!</p>
-<p><img src="/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png" alt="chat picture with script test"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png" alt="chat picture with script test"></p>
 <p>Now change the configuration and try again! I'm using the <code>!throw</code> command with a <code>20</code> sided dice and the <code>$user summons a D$sides dice and rolls $value$</code> message.</p>
-<p><img src="/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png" alt="custom configuration chat picture with script test"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png" alt="custom configuration chat picture with script test"></p>
 <h3 id="6-add-a-readme-button">6. Add a README button</h3>
 <p>Your script is working! But what if you have a more complex script? Or you want to leave your contact information so that people can give you suggestions or report issues? You need a README.</p>
 <p>First edit your README with all the info you want to give the user:</p>
@@ -515,7 +515,7 @@
 <p>You have to do it this way because everytime you click on the script name, the user interface gets reloaded. Also the script that is currently running doesn't have the function defined so it will just throw an error. But even if you have the function defined and the user interface open and reload the scripts the button will stop working because it was linked to the function from the previously loaded script!</p>
 <h3 id="extra-common-error">Extra. Common error</h3>
 <p>When using dictionaries there is an error with a non-descriptive error message, I modified a line so you can take a look at it:</p>
-<p><img src="/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png" alt="non descriptive error message"></p>
+<p><img src="https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png" alt="non descriptive error message"></p>
 <p><em>Cool story bro! What is the problem?</em> Well... the problem is that you tried to access a key in the dictionary that doesn't exists!</p>
 <p>This is how the line #50 looks, you can see that we tried to access the <code>messsage</code> key instead of the <code>message</code> key!</p>
 <p class="filename">DiceRoll_StreamlabsSystem.py</p>
