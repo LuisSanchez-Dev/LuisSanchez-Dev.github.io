@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tutorial on Luis Sánchez Blog</title>
-    <link>https://example.com/categories/tutorial/</link>
+    <link>https://luissanchezdev.com/categories/tutorial/</link>
     <description>Recent content in Tutorial on Luis Sánchez Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020–2021, Luis Sánchez. All rights reserved.</copyright>
-    <lastBuildDate>Thu, 08 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/tutorial/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://luissanchezdev.com/categories/tutorial/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Add an user interface to your Streamlabs Chatbot script using UI_Config.json</title>
-      <link>https://example.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</link>
+      <link>https://luissanchezdev.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</link>
       <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</guid>
+      <guid>https://luissanchezdev.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</guid>
       <description>
         
           &lt;p&gt;Make your scripts look professional and easy to use with an user interface capable of customizing your script to meet your users requirements.&lt;/p&gt;
@@ -21,7 +21,7 @@
 &lt;h2 id=&#34;download&#34;&gt;Download&lt;/h2&gt;
 &lt;p&gt;You can download the script to follow along from &lt;a href=&#34;https://dev.azure.com/luissanchezdev-blog/1140a576-94b1-44e5-ad98-a023edf1b7a4/_apis/git/repositories/07ce3f5f-75e9-457e-a653-f72a9351c670/items?path=%2FDiceRoller&amp;amp;versionDescriptor%5BversionOptions%5D=0&amp;amp;versionDescriptor%5BversionType%5D=0&amp;amp;versionDescriptor%5Bversion%5D=master&amp;amp;resolveLfs=true&amp;amp;%24format=zip&amp;amp;api-version=5.0&amp;amp;download=true&#34;&gt;here (direct download)&lt;/a&gt; or &lt;a href=&#34;http://gestyy.com/ee9Nrc&#34;&gt;here (support the blog)&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
-&lt;p&gt;If you don&#39;t know how to make a Streamlabs Chatbot script make sure to check out &lt;a href=&#34;https://example.com/create-your-first-streamlabs-chatbot-script/&#34;&gt;how to create your first Streamlabs Chatbot script&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you don&#39;t know how to make a Streamlabs Chatbot script make sure to check out &lt;a href=&#34;https://luissanchezdev.com/create-your-first-streamlabs-chatbot-script/&#34;&gt;how to create your first Streamlabs Chatbot script&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;You also need to understand JSON (JavaScript Object Notation) to edit the user interface file, you can learn about JSON at these W3Schools&#39; pages: &lt;a href=&#34;https://www.w3schools.com/js/js_json_intro.asp&#34;&gt;JSON - Introduction&lt;/a&gt; and &lt;a href=&#34;https://www.w3schools.com/js/js_json_syntax.asp&#34;&gt;JSON Syntax&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Related to JSON, the JSON file will be converted to a Python Dictionary, you can &lt;a href=&#34;https://docs.python.org/2/tutorial/datastructures.html#tut-dictionaries&#34;&gt;learn more about python dictionaries here&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;adding-an-user-interface-to-your-script&#34;&gt;Adding an user interface to your script&lt;/h2&gt;
@@ -155,7 +155,7 @@
 &lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save the file and go to the scripts list, click on the &lt;code&gt;Dice Roll&lt;/code&gt; script name and you can now see your user interface.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png&#34; alt=&#34;script user interface&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png&#34; alt=&#34;script user interface&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Now with the user interface ready lets go  and edit the script!&lt;/p&gt;
 &lt;h3 id=&#34;4-reading-the-configuration-file&#34;&gt;4. Reading the configuration file&lt;/h3&gt;
 &lt;p&gt;When the user clicks on the &lt;code&gt;SAVE SETTINGS&lt;/code&gt; button, Streamlabs Chatbot will create a file with the same name as the &lt;code&gt;&amp;quot;output_file&amp;quot;&lt;/code&gt; value in the &lt;code&gt;UI_Config.json&lt;/code&gt; file. If the user hasn&#39;t clicked the button, this file will not exist so we will set a default configuration.&lt;/p&gt;
@@ -291,9 +291,9 @@
 &lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ReloadSettings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsonData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save, reload the scripts, enable &lt;code&gt;Dice Roll&lt;/code&gt; and test the &lt;code&gt;!roll&lt;/code&gt; command!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png&#34; alt=&#34;chat picture with script test&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png&#34; alt=&#34;chat picture with script test&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Now change the configuration and try again! I&#39;m using the &lt;code&gt;!throw&lt;/code&gt; command with a &lt;code&gt;20&lt;/code&gt; sided dice and the &lt;code&gt;$user summons a D$sides dice and rolls $value$&lt;/code&gt; message.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png&#34; alt=&#34;custom configuration chat picture with script test&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png&#34; alt=&#34;custom configuration chat picture with script test&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;6-add-a-readme-button&#34;&gt;6. Add a README button&lt;/h3&gt;
 &lt;p&gt;Your script is working! But what if you have a more complex script? Or you want to leave your contact information so that people can give you suggestions or report issues? You need a README.&lt;/p&gt;
 &lt;p&gt;First edit your README with all the info you want to give the user:&lt;/p&gt;
@@ -348,7 +348,7 @@
 &lt;p&gt;You have to do it this way because everytime you click on the script name, the user interface gets reloaded. Also the script that is currently running doesn&#39;t have the function defined so it will just throw an error. But even if you have the function defined and the user interface open and reload the scripts the button will stop working because it was linked to the function from the previously loaded script!&lt;/p&gt;
 &lt;h3 id=&#34;extra-common-error&#34;&gt;Extra. Common error&lt;/h3&gt;
 &lt;p&gt;When using dictionaries there is an error with a non-descriptive error message, I modified a line so you can take a look at it:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png&#34; alt=&#34;non descriptive error message&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png&#34; alt=&#34;non descriptive error message&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Cool story bro! What is the problem?&lt;/em&gt; Well... the problem is that you tried to access a key in the dictionary that doesn&#39;t exists!&lt;/p&gt;
 &lt;p&gt;This is how the line #50 looks, you can see that we tried to access the &lt;code&gt;messsage&lt;/code&gt; key instead of the &lt;code&gt;message&lt;/code&gt; key!&lt;/p&gt;
 &lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
@@ -363,10 +363,10 @@
     
     <item>
       <title>Create your first Streamlabs Chatbot script</title>
-      <link>https://example.com/post/create-your-first-streamlabs-chatbot-script/</link>
+      <link>https://luissanchezdev.com/post/create-your-first-streamlabs-chatbot-script/</link>
       <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/create-your-first-streamlabs-chatbot-script/</guid>
+      <guid>https://luissanchezdev.com/post/create-your-first-streamlabs-chatbot-script/</guid>
       <description>
         
           &lt;p&gt;There are a lot of scripts already made by the Streamlabs Chatbot community in their &lt;a href=&#34;https://discord.com/invite/S2d4KGg&#34;&gt;discord server&lt;/a&gt; or by independent developers, but sometimes they don&#39;t work exactly how you want them to or the functionality you need hasn&#39;t been coded yet. In this case you can &lt;strong&gt;create your first Streamlabs Chatbot script&lt;/strong&gt; to understand how they work and implement your desired functionality.&lt;/p&gt;
@@ -377,12 +377,12 @@
 &lt;p&gt;To start creating your first script for Streamlabs Chatbot you need to meet these prerequisites:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Basic Python 2.7 programming language knowledge&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://example.com/how-to-use-scripts-in-streamlabs-chatbot/&#34;&gt;Have your Streamlabs Chatbot set up to run scripts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://luissanchezdev.com/how-to-use-scripts-in-streamlabs-chatbot/&#34;&gt;Have your Streamlabs Chatbot set up to run scripts&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Don&#39;t get discouraged if you don&#39;t know the programming language that well yet, you can follow along with basic understanding of Python.&lt;/p&gt;
 &lt;h2 id=&#34;folder-location-and-structure&#34;&gt;Folder location and structure&lt;/h2&gt;
 &lt;p&gt;When you install a script it gets uncompressed and is copied to the Streamlabs Chatbot folder, to access this folder you just go  to the &lt;code&gt;Scripts&lt;/code&gt; tab, right click on the window and select the &lt;code&gt;Open Scripts Folder&lt;/code&gt; option. This will open the folder where all the scripts are, if the Streamlabs Chatbot was installed in the default location this  will open the &lt;code&gt;%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts&lt;/code&gt; folder.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/create-your-first-script/open-scripts-folder.png&#34; alt=&#34;open scripts folder option&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/create-your-first-script/open-scripts-folder.png&#34; alt=&#34;open scripts folder option&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Inside this folder each subfolder is a script and inside them are the script files as follows:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts\
 &lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;├── MyScript\
@@ -445,9 +445,9 @@
 &lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Tick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now reload the scripts to see the new script appear in the list.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/create-your-first-script/scripts-list.png&#34; alt=&#34;scripts list&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/create-your-first-script/scripts-list.png&#34; alt=&#34;scripts list&#34;&gt;&lt;/p&gt;
 &lt;p&gt;If it doesn&#39;t appear, take a look in the errors list to check if you didn&#39;t miss anything.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/create-your-first-script/errors-list-icon.png&#34; alt=&#34;script bug icon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/create-your-first-script/errors-list-icon.png&#34; alt=&#34;script bug icon&#34;&gt;&lt;/p&gt;
 &lt;p&gt;The script is now detected by Streamlabs Chatbot but right now it is deactivated, if the user doesn&#39;t activate your script, the &lt;code&gt;Execute&lt;/code&gt; and &lt;code&gt;Tick&lt;/code&gt; functions won&#39;t run, only the &lt;code&gt;Init&lt;/code&gt; function will.&lt;/p&gt;
 &lt;p&gt;The next step is to add the &lt;code&gt;!hello&lt;/code&gt; command to the script. The &lt;code&gt;Execute&lt;/code&gt; function runs whenever you receive a chat message, a whisper or a discord message. Since we only want to run when we receive a chat message we have to do the following:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
@@ -512,10 +512,10 @@
     
     <item>
       <title>How to use scripts in Streamlabs Chatbot</title>
-      <link>https://example.com/post/how-tu-use-scripts-in-streamlabs-chatbot/</link>
+      <link>https://luissanchezdev.com/post/how-tu-use-scripts-in-streamlabs-chatbot/</link>
       <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/post/how-tu-use-scripts-in-streamlabs-chatbot/</guid>
+      <guid>https://luissanchezdev.com/post/how-tu-use-scripts-in-streamlabs-chatbot/</guid>
       <description>
         
           &lt;p&gt;Streamlabs Chatbot is a powerful chatbot for Twitch and Youtube, with ability to make commands, timers, your own currency, song requests and many more features. But there are some times where these features are not enough so, What do you do? You install scripts to integrate custom functionality on your chatbot.&lt;/p&gt;
@@ -536,27 +536,27 @@
 &lt;p&gt;If you haven&#39;t already, download and install Streamlabs chatbot from &lt;a href=&#34;https://streamlabs.com/chatbot&#34;&gt;https://streamlabs.com/chatbot&lt;/a&gt; and install it. After installing make sure to follow the Setup Wizard to have your chatbot up and running.&lt;/p&gt;
 &lt;p&gt;If you already have Streamlabs Chatbot installed, make sure you are logged in on both the Bot account and the Streamer account.&lt;/p&gt;
 &lt;p&gt;After this make sure the &lt;code&gt;Scripts&lt;/code&gt; tab shows on the left side of the window.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/scripts-tab.png&#34; alt=&#34;scripts tab located with all other tabs&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/scripts-tab.png&#34; alt=&#34;scripts tab located with all other tabs&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;2-install-python-2713&#34;&gt;2. Install Python 2.7.13&lt;/h3&gt;
 &lt;p&gt;Python 2.7.13 is a requirement to be able to run scripts in Streamlabs Chatbot, download the &lt;code&gt;Windows x86-64 MSI installer&lt;/code&gt; from &lt;a href=&#34;https://www.python.org/downloads/release/python-2713/&#34;&gt;https://www.python.org/downloads/release/python-2713/&lt;/a&gt; and run it.&lt;/p&gt;
 &lt;p&gt;When the installer opens, select the &lt;code&gt;(•) Install for all users&lt;/code&gt; option and click &lt;code&gt;Next &amp;gt;&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;On this view, take note of the installation path, in this case is &lt;code&gt;C:\Python27\&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/python-path.png&#34; alt=&#34;installation path to copy&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/python-path.png&#34; alt=&#34;installation path to copy&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Then click twice on &lt;code&gt;Next &amp;gt;&lt;/code&gt; and accept the administration prompt. After waiting for the installation click &lt;code&gt;Finish&lt;/code&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;3-select-the-python-folder-in-streamlabs-chatbot&#34;&gt;3. Select the Python folder in Streamlabs Chatbot&lt;/h3&gt;
 &lt;p&gt;In Streamlabs Chatbot go to the &lt;code&gt;Scripts&lt;/code&gt; tab, then on the top right click on the &lt;strong&gt;⚙&lt;/strong&gt; icon.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/settings-icon.png&#34; alt=&#34;settings icon on the top right&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/settings-icon.png&#34; alt=&#34;settings icon on the top right&#34;&gt;&lt;/p&gt;
 &lt;p&gt;In this menu click on the &lt;code&gt;PICK FOLDER&lt;/code&gt; button, it will show a message telling you that you need to select the &lt;code&gt;Lib&lt;/code&gt; folder for it to work, click OK.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/settings-menu.png&#34; alt=&#34;settings menu&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/settings-menu.png&#34; alt=&#34;settings menu&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Now follow the path you wrote in the last step and enter to the &lt;code&gt;Lib&lt;/code&gt; folder and click &lt;code&gt;Save&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;http://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/pick-folder.png&#34; alt=&#34;Python Lib folder location&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Go back and now you are ready to start using scripts!&lt;/p&gt;
 &lt;h2 id=&#34;how-to-install-a-script-in-streamlabs-chatbot&#34;&gt;How to install a script in Streamlabs Chatbot&lt;/h2&gt;
 &lt;p&gt;Now that Streamlabs Chatbot is setup and ready to rock you need a script to install, if you already have one continue to the next step, if you don&#39;t you can use my &lt;a href=&#34;https://github.com/LuisSanchez-Dev/TheNewTTS/archive/master.zip&#34;&gt;Text to Speech script&lt;/a&gt; to follow the tutorial.&lt;/p&gt;
 &lt;p&gt;With your .ZIP file handy, in the &lt;code&gt;Scripts&lt;/code&gt; tab click on the import icon.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/import-icon.png&#34; alt=&#34;import script icon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/import-icon.png&#34; alt=&#34;import script icon&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Browse your .ZIP file and open it, you will receive a success message and the scripts list will refresh showing you the imported script.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/scripts-list.png&#34; alt=&#34;scripts list with the new script loaded&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/scripts-list.png&#34; alt=&#34;scripts list with the new script loaded&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Now that the script is loaded you have to &lt;strong&gt;[✓] enable the script&lt;/strong&gt; for it to start working. After enabling it just click on the script name, configure it to your needs, save settings and start using it!&lt;/p&gt;
 &lt;p&gt;Here is a list of scripts made by me to extend your chatbot:&lt;/p&gt;
 &lt;ul&gt;
