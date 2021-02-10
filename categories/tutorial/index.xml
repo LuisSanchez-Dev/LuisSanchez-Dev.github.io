@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tutorial on Luis Sánchez Blog</title>
+    <link>https://example.com/categories/tutorial/</link>
+    <description>Recent content in Tutorial on Luis Sánchez Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2020–2021, Luis Sánchez. All rights reserved.</copyright>
+    <lastBuildDate>Thu, 08 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/tutorial/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Add an user interface to your Streamlabs Chatbot script using UI_Config.json</title>
+      <link>https://example.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</link>
+      <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</guid>
+      <description>
+        
+          &lt;p&gt;Make your scripts look professional and easy to use with an user interface capable of customizing your script to meet your users requirements.&lt;/p&gt;
+&lt;p&gt;All the streamers who have used scripts before always check the configuration interface just after installing a script, so it makes sense to make your script as customizable as possible. Commands, cooldowns, messages, live only and script specific customizations!&lt;/p&gt;
+&lt;p&gt;In this post I will show you how to add an user interface to your script. The script we will create will be a dice roll script where the sides of the diCe can be customizable along the command, live only and output message.&lt;/p&gt;
+&lt;h2 id=&#34;download&#34;&gt;Download&lt;/h2&gt;
+&lt;p&gt;You can download the script to follow along from &lt;a href=&#34;https://dev.azure.com/luissanchezdev-blog/1140a576-94b1-44e5-ad98-a023edf1b7a4/_apis/git/repositories/07ce3f5f-75e9-457e-a653-f72a9351c670/items?path=%2FDiceRoller&amp;amp;versionDescriptor%5BversionOptions%5D=0&amp;amp;versionDescriptor%5BversionType%5D=0&amp;amp;versionDescriptor%5Bversion%5D=master&amp;amp;resolveLfs=true&amp;amp;%24format=zip&amp;amp;api-version=5.0&amp;amp;download=true&#34;&gt;here (direct download)&lt;/a&gt; or &lt;a href=&#34;http://gestyy.com/ee9Nrc&#34;&gt;here (support the blog)&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;p&gt;If you don&#39;t know how to make a Streamlabs Chatbot script make sure to check out &lt;a href=&#34;https://example.com/create-your-first-streamlabs-chatbot-script/&#34;&gt;how to create your first Streamlabs Chatbot script&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You also need to understand JSON (JavaScript Object Notation) to edit the user interface file, you can learn about JSON at these W3Schools&#39; pages: &lt;a href=&#34;https://www.w3schools.com/js/js_json_intro.asp&#34;&gt;JSON - Introduction&lt;/a&gt; and &lt;a href=&#34;https://www.w3schools.com/js/js_json_syntax.asp&#34;&gt;JSON Syntax&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Related to JSON, the JSON file will be converted to a Python Dictionary, you can &lt;a href=&#34;https://docs.python.org/2/tutorial/datastructures.html#tut-dictionaries&#34;&gt;learn more about python dictionaries here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;adding-an-user-interface-to-your-script&#34;&gt;Adding an user interface to your script&lt;/h2&gt;
+&lt;h3 id=&#34;1-folder-and-files&#34;&gt;1. Folder and files&lt;/h3&gt;
+&lt;p&gt;We will create the next folder structure for our dice rolling script. The name will be &lt;code&gt;Dice Roll&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts\
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;└── DiceRoll\
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    ├── DiceRoll_StreamlabsSystem.py
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;    ├── UI_Config.json
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;    └── README.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-initialize-the-script&#34;&gt;2. Initialize the script&lt;/h3&gt;
+&lt;p&gt;Before we start editing our user interface we need to make our script appear in the scripts list, so we initialize it with the required variables and functions:&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ScriptName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Dice Roll&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Description&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Adds a command to roll a customizable die&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Creator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;LuisSanchezDev&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Version&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Tick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save the file, reload the scripts and make sure it shows up in the scripts list. There is no need to enable it yet.&lt;/p&gt;
+&lt;h3 id=&#34;3-add-controls-to-the-user-interface&#34;&gt;3. Add controls to the user interface&lt;/h3&gt;
+&lt;p&gt;Before editing the UI_Config.json file to add our controls, we need to define what controls we need and what information they hold, for example:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Configuration&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Live only&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;checkbox&lt;/td&gt;
+&lt;td&gt;False&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Roll command&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;td&gt;!roll&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Number of dice faces&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;numberbox&lt;/td&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Roll message&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;td&gt;$user throws a $sides-sided dice: $value&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The words starting with a dollar sign (&lt;code&gt;$&lt;/code&gt;) are placeholders where we will put our own data.&lt;/p&gt;
+&lt;p&gt;Now that we know what information we need to customize the script we will edit the &lt;code&gt;UI_Config.json&lt;/code&gt; file. Since it is a json file we enclose everything in curly brackets &lt;code&gt;{}&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The first thing we need to specify is the filename where all the customized information will be stored.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;UI_Config.json&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;output_file&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;config.json&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next step is to specify all the controls we want. Each control is a json object with key-value pairs specific to each control type. The most common keys are:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&amp;quot;type&amp;quot;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Specify the control type like checkbox, numberbox, textbox, etc.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&amp;quot;label&amp;quot;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;The name shown next to the control input.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&amp;quot;value&amp;quot;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Control default value, this value is shown the first time the user opens the configuration interface.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;&amp;quot;tooltip&amp;quot;&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;Text shown when leaving the mouse over the control, useful for extra description.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&amp;quot;group&amp;quot;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Specify the control group to keep your configuration interface clean and tidy.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The entire controls list can be found in the &lt;a href=&#34;https://github.com/AnkhHeart/Streamlabs-Chatbot-Python-Boilerplate/wiki/Creating-UI-Config-File#example-file&#34;&gt;Streamlabs Chatbot wiki&lt;/a&gt;. In this case we are only using a checkbox, 2 textboxes and a numberbox which only need the keys specified before.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;UI_Config.json&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;output_file&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;config.json&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;live_only&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;checkbox&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;label&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Live only&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;tooltip&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Check this option to limit the usage of this command to only live mode&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;group&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;General&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;textbox&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;label&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Roll command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!roll&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;tooltip&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Command to roll a dice&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;group&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;General&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;numberbox&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;label&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Number of dice faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;tooltip&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Specify the amount of faces for the dice&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;group&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;General&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;23&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;24&lt;/span&gt;  &lt;span class=&#34;nt&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;25&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;textbox&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;26&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;label&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Roll message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;27&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;$user throws a $sides-sided dice: $value&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;28&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;tooltip&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Shown when an user uses the command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;29&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;group&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;General&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save the file and go to the scripts list, click on the &lt;code&gt;Dice Roll&lt;/code&gt; script name and you can now see your user interface.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png&#34; alt=&#34;script user interface&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now with the user interface ready lets go  and edit the script!&lt;/p&gt;
+&lt;h3 id=&#34;4-reading-the-configuration-file&#34;&gt;4. Reading the configuration file&lt;/h3&gt;
+&lt;p&gt;When the user clicks on the &lt;code&gt;SAVE SETTINGS&lt;/code&gt; button, Streamlabs Chatbot will create a file with the same name as the &lt;code&gt;&amp;quot;output_file&amp;quot;&lt;/code&gt; value in the &lt;code&gt;UI_Config.json&lt;/code&gt; file. If the user hasn&#39;t clicked the button, this file will not exist so we will set a default configuration.&lt;/p&gt;
+&lt;h4 id=&#34;importing-required-modules&#34;&gt;Importing required modules&lt;/h4&gt;
+&lt;p&gt;Streamlabs Chatbot saves the json configuration file with &lt;code&gt;UTF8 BOM&lt;/code&gt; encoding and since the Python version that is loaded is 2.7.13 we need to use the &lt;code&gt;codecs&lt;/code&gt; module to open it. Also the starting path is where the &lt;code&gt;Streamlabs Chatbot.exe&lt;/code&gt; is, so we need the &lt;code&gt;os&lt;/code&gt; module to work with paths.&lt;/p&gt;
+&lt;p&gt;Add the following code to the beginning of your script file.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;os&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;json&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;codecs&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ScriptName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Dice Roll&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;global-variables&#34;&gt;Global variables&lt;/h4&gt;
+&lt;p&gt;Now we need some global variables to save important stuff such as the script directory path and the loaded settings so we can use them anywhere on the script.&lt;/p&gt;
+&lt;p&gt;You can see that I also added the path to the config file to my global variables, it makes it easier to read the code when loading the configuration.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Global variables&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CONFIG_FILE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dirname&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;realpath&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;vm&#34;&gt;__file__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CONFIG_FILE&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;config.json&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;loading-the-configuration&#34;&gt;Loading the configuration&lt;/h4&gt;
+&lt;p&gt;We will load the configuration in the &lt;code&gt;Init&lt;/code&gt; function to have everything ready before the script starts, since the config file is saved with the &lt;code&gt;UTF8 BOM&lt;/code&gt; encoding we will use &lt;code&gt;codecs.open&lt;/code&gt; since you can&#39;t specify a encoding in the default &lt;code&gt;open&lt;/code&gt; function.&lt;/p&gt;
+&lt;p&gt;If we get an error while trying to open the config file that means there is no config file, so we can enclose the file opening code in a try/except block to load a default configuration.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CONFIG_FILE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# Open config file with UTF8 BOM encoding&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;codecs&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CONFIG_FILE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;utf-8-sig&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;mode&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;file&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;      &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;json&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;load&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;file&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;utf-8-sig&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;except&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# Error loading the file, set default configuration&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;#34;live_only&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;False&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;#34;command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!roll&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;      &lt;span class=&#34;s2&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;$user throws a $sides-sided dice: $value&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;    
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# Prevent dice faces being less than 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;      &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;22&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As you can see, we used the same keys as the &lt;code&gt;UI_Config.json&lt;/code&gt; file, loading the configuration file gives you the same dictionary with the user settings.&lt;/p&gt;
+&lt;p&gt;After loading the configuration you should take the opportunity to clean the input data, in this case we just make sure the number of faces is no less than 2 so when the user rolls the dice they get one of two numbers at least.&lt;/p&gt;
+&lt;p&gt;Now the &lt;code&gt;SETTINGS&lt;/code&gt; object has all the configuration, we can now use it wherever we want, like for example in the &lt;code&gt;Execute&lt;/code&gt; function.&lt;/p&gt;
+&lt;h3 id=&#34;5-creating-the-command&#34;&gt;5. Creating the command&lt;/h3&gt;
+&lt;p&gt;With all the configuration handy we now write our command, as always only allow chat messages, then check if the streamer is live and if the command should work as per the script configuration.&lt;/p&gt;
+&lt;p&gt;I like to put all the conditions that should prevent further execution at the beginning of the code block.&lt;/p&gt;
+&lt;p&gt;To check if the streamer is live we use the &lt;code&gt;IsLive&lt;/code&gt; function from the &lt;code&gt;Parent&lt;/code&gt; object.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;live_only&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsLive&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;      &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Is time to check if the command the user sent is the command we want to react to,but wait! Last time we hardcoded the command in the script, now we must take the value from the loaded configuration.&lt;/p&gt;
+&lt;p&gt;The command is now saved in our &lt;code&gt;SETTINGS&lt;/code&gt; variable, we can access it using the &lt;code&gt;&amp;quot;command&amp;quot;&lt;/code&gt; key as follows:&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;live_only&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsLive&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;      &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# The command was used&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now that we are filtering only the command we want is time to code the command logic.&lt;/p&gt;
+&lt;p&gt;We will use the function &lt;code&gt;GetRandom&lt;/code&gt; from the &lt;code&gt;Parent&lt;/code&gt; object to throw the dice and get a random number. You can see all the &lt;code&gt;Parent&lt;/code&gt; functions at the &lt;a href=&#34;https://github.com/AnkhHeart/Streamlabs-Chatbot-Python-Boilerplate/wiki/Parent&#34;&gt;Parent object wiki&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; The &lt;code&gt;GetRandom&lt;/code&gt; function takes two arguments, the minimum and the maximum value. The maximum value is never reached so make sure to add +1 to the max value you want to get randomly.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# The command was used&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;dice_value&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetRandom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With the random dice value ready we just have to prepare our output message and send it. Remember we need to replace these words in the output message:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$user throws a $sides-sided dice: $value&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;$user&lt;/strong&gt;: Replace with the username stored in &lt;code&gt;data.UserName&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$sides&lt;/strong&gt;: Dice number of faces, this is in the &lt;code&gt;SETTINGS[&amp;quot;faces&amp;quot;]&lt;/code&gt; configuration.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$value&lt;/strong&gt;: The dice value, we just got it in &lt;code&gt;dice_value&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Every string has a &lt;code&gt;replace&lt;/code&gt; function we can use tu replace words in them, also don&#39;t forget to convert the numbers to strings:&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;command&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# The command was used&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;dice_value&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetRandom&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;    
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;$user&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UserName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;$sides&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;faces&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]))&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;$value&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dice_value&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SendStreamMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you try your script right now it will work but when the user saves a new configuration they will need to reload all the scripts. To tackle this, Streamlabs Chatbot has an optional function you can use called &lt;code&gt;ReloadSettings&lt;/code&gt;, this function gets called when the user saves new settings.&lt;/p&gt;
+&lt;p&gt;This is why you should initialize everything in the &lt;code&gt;Init&lt;/code&gt; function, you just have to call it inside the &lt;code&gt;ReloadSettings&lt;/code&gt; function to avoid reloading all scripts:&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Tick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ReloadSettings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsonData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save, reload the scripts, enable &lt;code&gt;Dice Roll&lt;/code&gt; and test the &lt;code&gt;!roll&lt;/code&gt; command!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png&#34; alt=&#34;chat picture with script test&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now change the configuration and try again! I&#39;m using the &lt;code&gt;!throw&lt;/code&gt; command with a &lt;code&gt;20&lt;/code&gt; sided dice and the &lt;code&gt;$user summons a D$sides dice and rolls $value$&lt;/code&gt; message.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png&#34; alt=&#34;custom configuration chat picture with script test&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;6-add-a-readme-button&#34;&gt;6. Add a README button&lt;/h3&gt;
+&lt;p&gt;Your script is working! But what if you have a more complex script? Or you want to leave your contact information so that people can give you suggestions or report issues? You need a README.&lt;/p&gt;
+&lt;p&gt;First edit your README with all the info you want to give the user:&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;README.txt&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;Dice Roll made by Luis Sanchez
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;  Found any bugs or want to give a suggestion?
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;    * Email: my.email@email.com
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;    * Discord: myname#0123
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;    * Phone: 555-0123
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;Description
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;This script allows you and your viewers to roll a dice with customizable settings!
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;Features
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;* Anyone can roll a dice!
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;* 6 sided dice? 20 sides? 100? Set your own dice sides!
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;* Customizable message
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now add a button as the first control in your &lt;code&gt;UI_Config.json&lt;/code&gt;, this button will show our &lt;code&gt;README.txt&lt;/code&gt;.&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;UI_Config.json&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;output_file&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;config.json&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;readme&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;button&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;label&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Open README&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;tooltip&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Click here to open the README for features list, usage and contact information&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;function&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;open_readme&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;wsevent&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;group&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;General&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;live_only&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;[...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;function&lt;/code&gt; value in the button control is the name of the function you want this button to run.&lt;/p&gt;
+&lt;p&gt;Let&#39;s add an &lt;code&gt;open_readme&lt;/code&gt; function to our script!&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ReloadSettings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsonData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;open_readme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;readme_path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;README.txt&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;startfile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;readme_path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As you can see, we use &lt;code&gt;os.startfile&lt;/code&gt; to open the &lt;code&gt;README.txt&lt;/code&gt; file. If you have your script on Github you can replace the file path with an url and it will open it.&lt;/p&gt;
+&lt;p&gt;To test the button you have to follow these steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Save all files&lt;/li&gt;
+&lt;li&gt;Reload the scripts&lt;/li&gt;
+&lt;li&gt;Click on the &lt;code&gt;Dice Roll&lt;/code&gt; script to show the user interface&lt;/li&gt;
+&lt;li&gt;Click the &lt;code&gt;OPEN README&lt;/code&gt; button&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You have to do it this way because everytime you click on the script name, the user interface gets reloaded. Also the script that is currently running doesn&#39;t have the function defined so it will just throw an error. But even if you have the function defined and the user interface open and reload the scripts the button will stop working because it was linked to the function from the previously loaded script!&lt;/p&gt;
+&lt;h3 id=&#34;extra-common-error&#34;&gt;Extra. Common error&lt;/h3&gt;
+&lt;p&gt;When using dictionaries there is an error with a non-descriptive error message, I modified a line so you can take a look at it:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png&#34; alt=&#34;non descriptive error message&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Cool story bro! What is the problem?&lt;/em&gt; Well... the problem is that you tried to access a key in the dictionary that doesn&#39;t exists!&lt;/p&gt;
+&lt;p&gt;This is how the line #50 looks, you can see that we tried to access the &lt;code&gt;messsage&lt;/code&gt; key instead of the &lt;code&gt;message&lt;/code&gt; key!&lt;/p&gt;
+&lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;output_msg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;messsage&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;$user&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UserName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So when you see an error message like this one, make sure you are using the correct key.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;It wasn&#39;t that difficult right? Create your UI_Config.json file, paste the controls you want and read the values from the script! With this information now your scripts will look professional and will be easy to use.&lt;/p&gt;
+&lt;p&gt;If you start creating a lot of sscripts I recommend to fill the settings first inside the script and when you finish the script, create your UI_Config.json file. Remember to make your script super easy to use and always add a README button for instructions on how to use your script.&lt;/p&gt;
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Create your first Streamlabs Chatbot script</title>
+      <link>https://example.com/post/create-your-first-streamlabs-chatbot-script/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/post/create-your-first-streamlabs-chatbot-script/</guid>
+      <description>
+        
+          &lt;p&gt;There are a lot of scripts already made by the Streamlabs Chatbot community in their &lt;a href=&#34;https://discord.com/invite/S2d4KGg&#34;&gt;discord server&lt;/a&gt; or by independent developers, but sometimes they don&#39;t work exactly how you want them to or the functionality you need hasn&#39;t been coded yet. In this case you can &lt;strong&gt;create your first Streamlabs Chatbot script&lt;/strong&gt; to understand how they work and implement your desired functionality.&lt;/p&gt;
+&lt;p&gt;When you finish this post you will have a simple Hello World script that greets everyone who uses the &lt;code&gt;!hello&lt;/code&gt; command. With this script as a base you can start creating your own custom scripts tailored to your exact needs.&lt;/p&gt;
+&lt;h2 id=&#34;download&#34;&gt;Download&lt;/h2&gt;
+&lt;p&gt;You can download the script to follow along from &lt;a href=&#34;https://dev.azure.com/luissanchezdev-blog/1140a576-94b1-44e5-ad98-a023edf1b7a4/_apis/git/repositories/07ce3f5f-75e9-457e-a653-f72a9351c670/items?path=%2FHelloWorld&amp;amp;versionDescriptor%5BversionOptions%5D=0&amp;amp;versionDescriptor%5BversionType%5D=0&amp;amp;versionDescriptor%5Bversion%5D=master&amp;amp;resolveLfs=true&amp;amp;%24format=zip&amp;amp;api-version=5.0&amp;amp;download=true&#34;&gt;here (direct download)&lt;/a&gt; or &lt;a href=&#34;http://gestyy.com/ee9MrS&#34;&gt;here (support the blog)&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;p&gt;To start creating your first script for Streamlabs Chatbot you need to meet these prerequisites:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Basic Python 2.7 programming language knowledge&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://example.com/how-to-use-scripts-in-streamlabs-chatbot/&#34;&gt;Have your Streamlabs Chatbot set up to run scripts&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Don&#39;t get discouraged if you don&#39;t know the programming language that well yet, you can follow along with basic understanding of Python.&lt;/p&gt;
+&lt;h2 id=&#34;folder-location-and-structure&#34;&gt;Folder location and structure&lt;/h2&gt;
+&lt;p&gt;When you install a script it gets uncompressed and is copied to the Streamlabs Chatbot folder, to access this folder you just go  to the &lt;code&gt;Scripts&lt;/code&gt; tab, right click on the window and select the &lt;code&gt;Open Scripts Folder&lt;/code&gt; option. This will open the folder where all the scripts are, if the Streamlabs Chatbot was installed in the default location this  will open the &lt;code&gt;%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/create-your-first-script/open-scripts-folder.png&#34; alt=&#34;open scripts folder option&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Inside this folder each subfolder is a script and inside them are the script files as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts\
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;├── MyScript\
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;│   ├── MyScript_StreamlabsSystem.py
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;│   ├── UI_Config.json
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;│   ├── config.js
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;│   └── config.json
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;└── My2ndScript\
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;    └── ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;MyScript_StreamlabsSystem.py&lt;/strong&gt; - This file is where all your code will be, for Streamlabs Chatbot to detect the file as a script you need to add &lt;code&gt;_StreamlabsSystem.py&lt;/code&gt; to the filename. To make a script named &amp;quot;Hello World&amp;quot; we would name the file ``HelloWorld_StreamlabsSystem.py`&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;UI_Config.json&lt;/strong&gt; - In this file is where you set your script&#39;s user interface to have configurable options in your script like a different command, a cooldown, etc. This file is not required for the script to work so we will skip it in this post.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;config.js&lt;/strong&gt; and &lt;strong&gt;config.json&lt;/strong&gt; - These files are automatically generated when clicking the &lt;code&gt;SAVE SETTINGS&lt;/code&gt; button inside the Streamlabs Chatbot configuration interface. Since we are not using the &lt;code&gt;UI_Config.json&lt;/code&gt; file, we won&#39;t use these neither.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;creating-the-script&#34;&gt;Creating the script&lt;/h2&gt;
+&lt;p&gt;We will create a &lt;code&gt;Hello World&lt;/code&gt; script which will greet everyone who uses the &lt;code&gt;!hello&lt;/code&gt; command with the &lt;code&gt;Hello user!&lt;/code&gt; message, where the user is the username.&lt;/p&gt;
+&lt;h3 id=&#34;creating-the-script-folder&#34;&gt;Creating the script folder&lt;/h3&gt;
+&lt;p&gt;Since the script name is &lt;code&gt;Hello World&lt;/code&gt; we will create a &lt;code&gt;HelloWorld&lt;/code&gt; folder with a &lt;code&gt;HelloWorld_StreamlabsSystem.py&lt;/code&gt; file in it as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;%APPDATA%\Streamlabs\Streamlabs Chatbot\Services\Scripts\
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;└── HelloWorld\
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    └── HelloWorld_StreamlabsSystem.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;required-variables-and-functions&#34;&gt;Required variables and functions&lt;/h3&gt;
+&lt;p&gt;All the scripts require these 5 variables and 3 functions in order to be detected by the Streamlabs Chatbot.&lt;/p&gt;
+&lt;h4 id=&#34;required-variables&#34;&gt;Required variables&lt;/h4&gt;
+&lt;p&gt;The required variables are self explanatory:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ScriptName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Description&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Adds a command to say hi&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Creator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;LuisSanchezDev&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Version&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;required-functions&#34;&gt;Required functions&lt;/h4&gt;
+&lt;p&gt;These functions are required in order for the script to be detected, even if they don&#39;t do anything.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Tick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Init&lt;/strong&gt; - Function to initialize your script.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Execute&lt;/strong&gt; - This function runs everytime you receive a message, the &lt;code&gt;data&lt;/code&gt; parameter contains all the information for that message.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Tick&lt;/strong&gt; - This function behaves like a loop and is ran constantly, it is mostly used for delays&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;writing-the-script&#34;&gt;Writing the script&lt;/h3&gt;
+&lt;p&gt;The first step is to write all the required stuff inside the &lt;code&gt;HelloWorld_StreamlabsSystem.py&lt;/code&gt; and check if the Streamlabs Chatbot detects it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ScriptName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Description&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Adds a command to say hi&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Creator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;LuisSanchezDev&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Version&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Tick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now reload the scripts to see the new script appear in the list.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/create-your-first-script/scripts-list.png&#34; alt=&#34;scripts list&#34;&gt;&lt;/p&gt;
+&lt;p&gt;If it doesn&#39;t appear, take a look in the errors list to check if you didn&#39;t miss anything.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/create-your-first-script/errors-list-icon.png&#34; alt=&#34;script bug icon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The script is now detected by Streamlabs Chatbot but right now it is deactivated, if the user doesn&#39;t activate your script, the &lt;code&gt;Execute&lt;/code&gt; and &lt;code&gt;Tick&lt;/code&gt; functions won&#39;t run, only the &lt;code&gt;Init&lt;/code&gt; function will.&lt;/p&gt;
+&lt;p&gt;The next step is to add the &lt;code&gt;!hello&lt;/code&gt; command to the script. The &lt;code&gt;Execute&lt;/code&gt; function runs whenever you receive a chat message, a whisper or a discord message. Since we only want to run when we receive a chat message we have to do the following:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To get the command from the chat message the &lt;code&gt;data&lt;/code&gt; object has a &lt;code&gt;GetParam(id)&lt;/code&gt; function that returns the parameter in the &lt;code&gt;id&lt;/code&gt; position starting at &lt;code&gt;0&lt;/code&gt;. Since our command is the first word of the message we ask for the first parameter.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With the command handy, we just need to compare it with the command we want, which in this case is &lt;code&gt;!hello&lt;/code&gt;. If the user did the command we just say hello back using the function &lt;code&gt;SendStreamMessage(message)&lt;/code&gt; located in the global object &lt;code&gt;Parent&lt;/code&gt;, this global object is provided by Streamlabs Chatbot.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!hello&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# The user used the !hello command, we say hi back&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SendStreamMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello world!&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now go back to Streamlabs Chatbot and reload the scripts, if your script didn&#39;t show up make sure to go to the errors list to check any errors with your script.&lt;/p&gt;
+&lt;p&gt;Make sure your script is enabled and then go to the &lt;code&gt;Console&lt;/code&gt; tab and use the &lt;code&gt;!hello&lt;/code&gt; command, you should see the &lt;code&gt;Hello world!&lt;/code&gt; message, if you don&#39;t, check the errors list and find any error.&lt;/p&gt;
+&lt;p&gt;Yay! The script works! But it doesn&#39;t do much :(. Insted of saying &lt;code&gt;Hello world!&lt;/code&gt; we will answer with &lt;code&gt;Hello user!&lt;/code&gt;, being &lt;code&gt;user&lt;/code&gt; the username. For this we use the &lt;code&gt;UserName&lt;/code&gt; attribute in the &lt;code&gt;data&lt;/code&gt; object.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!hello&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# The user used the !hello command, we say hi back&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;8&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UserName&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;9&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SendStreamMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Reload the scripts and use the &lt;code&gt;!hello&lt;/code&gt; command, now the answer is &lt;code&gt;Hello luissanchezdev!&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;And you are done! You have created your first Streamlabs Chatbot script, even if it is a simple one you can expand it a lot more using Python 2.7, in case you missed something I leave you the entire &lt;code&gt;HelloWorld_StreamlabsSystem.py&lt;/code&gt; file.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ScriptName&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Description&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Adds a command to say hi&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Creator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;LuisSanchezDev&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Version&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 9&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Execute&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;11&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;not&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;IsChatMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;12&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;13&lt;/span&gt;  
+&lt;span class=&#34;ln&#34;&gt;14&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;GetParam&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!hello&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;16&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# The user used the !hello command, we say hi back&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;17&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;UserName&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;18&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Parent&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SendStreamMessage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;Hello &amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;!&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;19&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Tick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;21&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;next-steps&#34;&gt;Next steps&lt;/h2&gt;
+&lt;p&gt;You can learn everything about the &lt;code&gt;data&lt;/code&gt; object in the &lt;a href=&#34;https://github.com/AnkhHeart/Streamlabs-Chatbot-Python-Boilerplate/wiki/Data-Object&#34;&gt;Data Object wiki&lt;/a&gt; or the &lt;code&gt;Parent&lt;/code&gt; object in the &lt;a href=&#34;https://github.com/AnkhHeart/Streamlabs-Chatbot-Python-Boilerplate/wiki/Parent&#34;&gt;Parent Object wiki&lt;/a&gt;&lt;/p&gt;
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>How to use scripts in Streamlabs Chatbot</title>
+      <link>https://example.com/post/how-tu-use-scripts-in-streamlabs-chatbot/</link>
+      <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/post/how-tu-use-scripts-in-streamlabs-chatbot/</guid>
+      <description>
+        
+          &lt;p&gt;Streamlabs Chatbot is a powerful chatbot for Twitch and Youtube, with ability to make commands, timers, your own currency, song requests and many more features. But there are some times where these features are not enough so, What do you do? You install scripts to integrate custom functionality on your chatbot.&lt;/p&gt;
+&lt;h2 id=&#34;what-are-streamlabs-chatbot-scripts&#34;&gt;What are Streamlabs Chatbot scripts?&lt;/h2&gt;
+&lt;p&gt;A Streamlabs Chatbot script is a package that contains code in the Python programming language and configuration files to add custom functionality to your chatbot, These packages are in a compressed .ZIP format for easy installation. Because these scripts are programmed in the Python 2.7 programming language, these scripts have a lot of potential, for example;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simple text based minigames&lt;/li&gt;
+&lt;li&gt;Dungeons and Dragons dice&lt;/li&gt;
+&lt;li&gt;Multiple currencies&lt;/li&gt;
+&lt;li&gt;OBS overlay integration&lt;/li&gt;
+&lt;li&gt;Database communication&lt;/li&gt;
+&lt;li&gt;And many more!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can find a lot of scripts in the &lt;code&gt;#scripts&lt;/code&gt; channel in the &lt;a href=&#34;https://discordapp.com/invite/S2d4KGg&#34;&gt;Streamlabs Chatbot Discord server&lt;/a&gt; or in my &lt;a href=&#34;http://github.luissanchezdev.com/&#34;&gt;Github page&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;BEWARE:&lt;/strong&gt; Do not install scripts from unknown or untrusted sources since the scripts have elevated permissions and could harm your computer. Only install scripts from developers you trust or from the #scripts channel in the &lt;a href=&#34;https://discordapp.com/invite/S2d4KGg&#34;&gt;Streamlabs Chatbot Discord server&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;preparing-streamlabs-chatbot-to-run-scripts&#34;&gt;Preparing Streamlabs Chatbot to run scripts&lt;/h2&gt;
+&lt;h3 id=&#34;1-install-and-configure-streamlabs-chatbot&#34;&gt;1. Install and configure Streamlabs Chatbot&lt;/h3&gt;
+&lt;p&gt;If you haven&#39;t already, download and install Streamlabs chatbot from &lt;a href=&#34;https://streamlabs.com/chatbot&#34;&gt;https://streamlabs.com/chatbot&lt;/a&gt; and install it. After installing make sure to follow the Setup Wizard to have your chatbot up and running.&lt;/p&gt;
+&lt;p&gt;If you already have Streamlabs Chatbot installed, make sure you are logged in on both the Bot account and the Streamer account.&lt;/p&gt;
+&lt;p&gt;After this make sure the &lt;code&gt;Scripts&lt;/code&gt; tab shows on the left side of the window.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/scripts-tab.png&#34; alt=&#34;scripts tab located with all other tabs&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2-install-python-2713&#34;&gt;2. Install Python 2.7.13&lt;/h3&gt;
+&lt;p&gt;Python 2.7.13 is a requirement to be able to run scripts in Streamlabs Chatbot, download the &lt;code&gt;Windows x86-64 MSI installer&lt;/code&gt; from &lt;a href=&#34;https://www.python.org/downloads/release/python-2713/&#34;&gt;https://www.python.org/downloads/release/python-2713/&lt;/a&gt; and run it.&lt;/p&gt;
+&lt;p&gt;When the installer opens, select the &lt;code&gt;(•) Install for all users&lt;/code&gt; option and click &lt;code&gt;Next &amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;On this view, take note of the installation path, in this case is &lt;code&gt;C:\Python27\&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/python-path.png&#34; alt=&#34;installation path to copy&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Then click twice on &lt;code&gt;Next &amp;gt;&lt;/code&gt; and accept the administration prompt. After waiting for the installation click &lt;code&gt;Finish&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;3-select-the-python-folder-in-streamlabs-chatbot&#34;&gt;3. Select the Python folder in Streamlabs Chatbot&lt;/h3&gt;
+&lt;p&gt;In Streamlabs Chatbot go to the &lt;code&gt;Scripts&lt;/code&gt; tab, then on the top right click on the &lt;strong&gt;⚙&lt;/strong&gt; icon.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/settings-icon.png&#34; alt=&#34;settings icon on the top right&#34;&gt;&lt;/p&gt;
+&lt;p&gt;In this menu click on the &lt;code&gt;PICK FOLDER&lt;/code&gt; button, it will show a message telling you that you need to select the &lt;code&gt;Lib&lt;/code&gt; folder for it to work, click OK.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/settings-menu.png&#34; alt=&#34;settings menu&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now follow the path you wrote in the last step and enter to the &lt;code&gt;Lib&lt;/code&gt; folder and click &lt;code&gt;Save&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://luissanchezdev.com/img/posts/streamlabs-chatbot/how-to-use-scripts/pick-folder.png&#34; alt=&#34;Python Lib folder location&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Go back and now you are ready to start using scripts!&lt;/p&gt;
+&lt;h2 id=&#34;how-to-install-a-script-in-streamlabs-chatbot&#34;&gt;How to install a script in Streamlabs Chatbot&lt;/h2&gt;
+&lt;p&gt;Now that Streamlabs Chatbot is setup and ready to rock you need a script to install, if you already have one continue to the next step, if you don&#39;t you can use my &lt;a href=&#34;https://github.com/LuisSanchez-Dev/TheNewTTS/archive/master.zip&#34;&gt;Text to Speech script&lt;/a&gt; to follow the tutorial.&lt;/p&gt;
+&lt;p&gt;With your .ZIP file handy, in the &lt;code&gt;Scripts&lt;/code&gt; tab click on the import icon.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/import-icon.png&#34; alt=&#34;import script icon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Browse your .ZIP file and open it, you will receive a success message and the scripts list will refresh showing you the imported script.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://example.com/img/posts/streamlabs-chatbot/how-to-use-scripts/scripts-list.png&#34; alt=&#34;scripts list with the new script loaded&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now that the script is loaded you have to &lt;strong&gt;[✓] enable the script&lt;/strong&gt; for it to start working. After enabling it just click on the script name, configure it to your needs, save settings and start using it!&lt;/p&gt;
+&lt;p&gt;Here is a list of scripts made by me to extend your chatbot:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/LuisSanchez-Dev/TheNewTTS&#34;&gt;TheNewTTS - The best Chat to Speech for Twitch, Mixer and Youtube for Streamlabs Chatbot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/LuisSanchez-Dev/TecnoTimers&#34;&gt;Tecno Timers - Start timers with a command and show them on an overlay&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/LuisSanchez-Dev/cool-hangman&#34;&gt;Cool Hangman - Let your users win points guessing letters and words, while everything is reflected in your OBS with an overlay&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/LuisSanchez-Dev/showredeems&#34;&gt;Show Redeems - Channel Points redeems on your Chatbot&#39;s Console&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>
