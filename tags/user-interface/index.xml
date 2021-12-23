@@ -2,17 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>user interface on Luis Sánchez Blog</title>
-    <link>https://luissanchezdev.com/tags/user-interface/</link>
+    <link>https://luissanchez-dev.github.io/tags/user-interface/</link>
     <description>Recent content in user interface on Luis Sánchez Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2020–2021, Luis Sánchez. All rights reserved.</copyright>
-    <lastBuildDate>Thu, 08 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://luissanchezdev.com/tags/user-interface/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://luissanchez-dev.github.io/tags/user-interface/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Add an user interface to your Streamlabs Chatbot script using UI_Config.json</title>
-      <link>https://luissanchezdev.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</link>
+      <link>https://luissanchez-dev.github.io/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</link>
       <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://luissanchezdev.com/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</guid>
+      <guid>https://luissanchez-dev.github.io/post/add-an-user-interface-to-your-streamlabs-chatbot-script-using-ui_config-json/</guid>
       <description>
         
           &lt;p&gt;Make your scripts look professional and easy to use with an user interface capable of customizing your script to meet your users requirements.&lt;/p&gt;
@@ -21,7 +22,7 @@
 &lt;h2 id=&#34;download&#34;&gt;Download&lt;/h2&gt;
 &lt;p&gt;You can download the script to follow along from &lt;a href=&#34;https://dev.azure.com/luissanchezdev-blog/1140a576-94b1-44e5-ad98-a023edf1b7a4/_apis/git/repositories/07ce3f5f-75e9-457e-a653-f72a9351c670/items?path=%2FDiceRoller&amp;amp;versionDescriptor%5BversionOptions%5D=0&amp;amp;versionDescriptor%5BversionType%5D=0&amp;amp;versionDescriptor%5Bversion%5D=master&amp;amp;resolveLfs=true&amp;amp;%24format=zip&amp;amp;api-version=5.0&amp;amp;download=true&#34;&gt;here (direct download)&lt;/a&gt; or &lt;a href=&#34;http://gestyy.com/ee9Nrc&#34;&gt;here (support the blog)&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
-&lt;p&gt;If you don&#39;t know how to make a Streamlabs Chatbot script make sure to check out &lt;a href=&#34;https://luissanchezdev.com/create-your-first-streamlabs-chatbot-script/&#34;&gt;how to create your first Streamlabs Chatbot script&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you don&#39;t know how to make a Streamlabs Chatbot script make sure to check out &lt;a href=&#34;https://luissanchez-dev.github.io/create-your-first-streamlabs-chatbot-script/&#34;&gt;how to create your first Streamlabs Chatbot script&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;You also need to understand JSON (JavaScript Object Notation) to edit the user interface file, you can learn about JSON at these W3Schools&#39; pages: &lt;a href=&#34;https://www.w3schools.com/js/js_json_intro.asp&#34;&gt;JSON - Introduction&lt;/a&gt; and &lt;a href=&#34;https://www.w3schools.com/js/js_json_syntax.asp&#34;&gt;JSON Syntax&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Related to JSON, the JSON file will be converted to a Python Dictionary, you can &lt;a href=&#34;https://docs.python.org/2/tutorial/datastructures.html#tut-dictionaries&#34;&gt;learn more about python dictionaries here&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;adding-an-user-interface-to-your-script&#34;&gt;Adding an user interface to your script&lt;/h2&gt;
@@ -39,7 +40,7 @@
 &lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Description&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Adds a command to roll a customizable die&amp;#34;&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Creator&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;LuisSanchezDev&amp;#34;&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Version&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;1.0.0&amp;#34;&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://luissanchez-dev.github.io/&amp;#34;&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 6&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 7&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 8&lt;/span&gt;  &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;
@@ -155,7 +156,7 @@
 &lt;span class=&#34;ln&#34;&gt;30&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save the file and go to the scripts list, click on the &lt;code&gt;Dice Roll&lt;/code&gt; script name and you can now see your user interface.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png&#34; alt=&#34;script user interface&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchez-dev.github.io/img/posts/streamlabs-chatbot/add-ui-to-script/script-user-interface.png&#34; alt=&#34;script user interface&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Now with the user interface ready lets go  and edit the script!&lt;/p&gt;
 &lt;h3 id=&#34;4-reading-the-configuration-file&#34;&gt;4. Reading the configuration file&lt;/h3&gt;
 &lt;p&gt;When the user clicks on the &lt;code&gt;SAVE SETTINGS&lt;/code&gt; button, Streamlabs Chatbot will create a file with the same name as the &lt;code&gt;&amp;quot;output_file&amp;quot;&lt;/code&gt; value in the &lt;code&gt;UI_Config.json&lt;/code&gt; file. If the user hasn&#39;t clicked the button, this file will not exist so we will set a default configuration.&lt;/p&gt;
@@ -174,7 +175,7 @@
 &lt;p&gt;You can see that I also added the path to the config file to my global variables, it makes it easier to read the code when loading the configuration.&lt;/p&gt;
 &lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://luissanchezdev.com/&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Website&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://luissanchez-dev.github.io/&amp;#34;&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 3&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 4&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# Global variables&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt; 5&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CONFIG_FILE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SETTINGS&lt;/span&gt;
@@ -291,9 +292,9 @@
 &lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;ReloadSettings&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsonData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
 &lt;span class=&#34;ln&#34;&gt;7&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;Init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Save, reload the scripts, enable &lt;code&gt;Dice Roll&lt;/code&gt; and test the &lt;code&gt;!roll&lt;/code&gt; command!&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png&#34; alt=&#34;chat picture with script test&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchez-dev.github.io/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-1.png&#34; alt=&#34;chat picture with script test&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Now change the configuration and try again! I&#39;m using the &lt;code&gt;!throw&lt;/code&gt; command with a &lt;code&gt;20&lt;/code&gt; sided dice and the &lt;code&gt;$user summons a D$sides dice and rolls $value$&lt;/code&gt; message.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png&#34; alt=&#34;custom configuration chat picture with script test&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchez-dev.github.io/img/posts/streamlabs-chatbot/add-ui-to-script/script-test-2.png&#34; alt=&#34;custom configuration chat picture with script test&#34;&gt;&lt;/p&gt;
 &lt;h3 id=&#34;6-add-a-readme-button&#34;&gt;6. Add a README button&lt;/h3&gt;
 &lt;p&gt;Your script is working! But what if you have a more complex script? Or you want to leave your contact information so that people can give you suggestions or report issues? You need a README.&lt;/p&gt;
 &lt;p&gt;First edit your README with all the info you want to give the user:&lt;/p&gt;
@@ -348,7 +349,7 @@
 &lt;p&gt;You have to do it this way because everytime you click on the script name, the user interface gets reloaded. Also the script that is currently running doesn&#39;t have the function defined so it will just throw an error. But even if you have the function defined and the user interface open and reload the scripts the button will stop working because it was linked to the function from the previously loaded script!&lt;/p&gt;
 &lt;h3 id=&#34;extra-common-error&#34;&gt;Extra. Common error&lt;/h3&gt;
 &lt;p&gt;When using dictionaries there is an error with a non-descriptive error message, I modified a line so you can take a look at it:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://luissanchezdev.com/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png&#34; alt=&#34;non descriptive error message&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://luissanchez-dev.github.io/img/posts/streamlabs-chatbot/add-ui-to-script/error-message.png&#34; alt=&#34;non descriptive error message&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Cool story bro! What is the problem?&lt;/em&gt; Well... the problem is that you tried to access a key in the dictionary that doesn&#39;t exists!&lt;/p&gt;
 &lt;p&gt;This is how the line #50 looks, you can see that we tried to access the &lt;code&gt;messsage&lt;/code&gt; key instead of the &lt;code&gt;message&lt;/code&gt; key!&lt;/p&gt;
 &lt;p class=&#34;filename&#34;&gt;DiceRoll_StreamlabsSystem.py&lt;/p&gt;
